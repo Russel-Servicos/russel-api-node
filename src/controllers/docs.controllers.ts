@@ -11,7 +11,7 @@ export async function created(req: Request, res: Response, next: NextFunction) {
 
     for (let signer of signers) {
       const html = await createTemplate(signer.sign_url);
-      await sendMail(signer.email, "Confirmação de e-mail", html);
+      await sendMail(signer.email, "Contrato de prestação de serviço", html);
     }
 
     res.status(200).json({});
