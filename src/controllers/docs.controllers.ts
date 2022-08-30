@@ -17,7 +17,7 @@ export async function created(req: Request, res: Response, next: NextFunction) {
     res.status(200).json({});
   } catch (error) {
     console.log(error);
-    res.status(500).end();
+    res.status(500).json({ error });
   }
 }
 
