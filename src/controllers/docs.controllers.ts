@@ -23,7 +23,7 @@ export async function created(req: Request, res: Response, next: NextFunction) {
 async function createTemplate(url_doc: string): Promise<string> {
   try {
     const source = await fs.readFile(
-      path.resolve(__dirname, "../public/email_assinatura.html"),
+      path.resolve(__dirname, "../../public/email_assinatura.html"),
       "utf-8"
     );
     const template = handlebars.compile(source);
