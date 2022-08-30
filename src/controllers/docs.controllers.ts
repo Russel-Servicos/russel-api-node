@@ -9,12 +9,10 @@ export async function created(req: Request, res: Response, next: NextFunction) {
     const { signers } = req.body;
     if (!signers) throw "lista de assinantes ausente";
 
-    // for (let signer of signers) {
-    //   const html = await createTemplate(signer.sign_url);
-    //   await sendMail(signer.email, "Confirmação de e-mail", html);
-    // }
-    const html = await createTemplate("google.com");
-    await sendMail("", "Teste de email", html);
+    for (let signer of signers) {
+      const html = await createTemplate(signer.sign_url);
+      await sendMail(signer.email, "Confirmação de e-mail", html);
+    }
 
     res.status(200).end();
   } catch (error) {

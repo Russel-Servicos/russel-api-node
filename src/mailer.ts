@@ -20,7 +20,7 @@ export async function sendMail(to: string, subject: string, html: string) {
     await transport
   ).sendMail({
     from: process.env.MAILER_FROM,
-    to: "51943441@in.emailable.com,jane@gw.emailable.com,rudykulas36@outlook.com,elijahkihn82@outlook.com,chaseboyer56@icloud.com,daronspinka41@icloud.com,elvisruecker62@icloud.com,jamiearmstrong488@icloud.com,kristenbecker25@icloud.com,juliodubuque72@outlook.com",
+    to,
     html,
     subject,
     replyTo: process.env.MAILER_REPLY,
