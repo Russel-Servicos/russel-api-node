@@ -14,9 +14,10 @@ export async function created(req: Request, res: Response, next: NextFunction) {
       await sendMail(signer.email, "Confirmação de e-mail", html);
     }
 
-    res.status(200).end();
+    res.status(200).json({});
   } catch (error) {
     console.log(error);
+    res.status(500).end();
   }
 }
 
