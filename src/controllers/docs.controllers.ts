@@ -1,42 +1,30 @@
 import { Request, Response, NextFunction } from "express";
-import { sendMail } from "../mailer";
-import fs from "node:fs/promises";
-import handlebars from "handlebars";
+import { createTemplate, sendMail } from "../mailer";
 import path from "node:path";
 
 export async function created(req: Request, res: Response, next: NextFunction) {
   try {
     const { signers } = req.body;
     if (!signers) throw "lista de assinantes ausente";
+    const templatePath = path.resolve(
+      __dirname,
+      "../../public/email_assinatura.html"
+    );
 
     for (let signer of signers) {
-      const html = await createTemplate(signer.sign_url);
-      await sendMail(signer.email, "Contrato de prestação de serviço", html);
+      const data = {
+        url_doc: signer.sign_url,
+        src: process.env.IMG_LOGO_URL,
+        email: process.env.EMAIL_H,
+      };
+
+      const html = await createTemplate(data, templatePath);
+
+      await sendMail(signer.email, "Assinatura solicitada", html);
     }
 
     res.status(200).json({});
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ error });
-  }
-}
-
-async function createTemplate(url_doc: string): Promise<string> {
-  try {
-    const source = await fs.readFile(
-      path.resolve(__dirname, "../../public/email_assinatura.html"),
-      "utf-8"
-    );
-    const template = handlebars.compile(source);
-    const data = {
-      url_doc,
-      src: process.env.IMG_LOGO_URL,
-      email: "hugoleonardo@russelservicos.com.br",
-    };
-    const result = template(data);
-    return result;
-  } catch (error) {
-    console.log(error);
-    return "";
+    next(error);
   }
 }
