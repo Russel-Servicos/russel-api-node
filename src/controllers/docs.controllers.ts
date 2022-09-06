@@ -1,10 +1,11 @@
 import { Request, Response, NextFunction } from "express";
 import Mailer from "../lib/mailer";
 import path from "node:path";
+import sendOrderEmail from "../lib/sendOrderEmail";
 
 export async function created(req: Request, res: Response, next: NextFunction) {
   try {
-    const { signers } = req.body;
+    const { signers, external_id: code } = req.body;
     if (!signers) throw "lista de assinantes ausente";
     const templatePath = path.resolve(
       __dirname,
@@ -25,6 +26,7 @@ export async function created(req: Request, res: Response, next: NextFunction) {
       await mailer.sendMail(signer.email, "Assinatura solicitada", html);
     }
 
+    await sendOrderEmail(parseInt(code), "assinatura");
     res.status(200).json({});
   } catch (error) {
     next(error);
