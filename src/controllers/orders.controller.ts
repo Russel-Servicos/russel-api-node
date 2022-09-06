@@ -40,7 +40,11 @@ export async function orderCreated(
 
       const mailGroup = `${order.user.email},${process.env.EMAIL_H}`;
 
-      await sendMail(mailGroup, "Pedido realizado", html);
+      await sendMail(
+        mailGroup,
+        `Pedido de implantação #${order.code} criado`,
+        html
+      );
       await prisma.$disconnect();
 
       res.status(200).json({});
@@ -55,7 +59,7 @@ function createOrderObj(
   enterprise: users_entreprises[]
 ) {
   return {
-    code: order?.id,
+    code: order?.code,
     date: new Date(order?.delivery_date || "").toLocaleDateString(),
     payment: convertPayment(order?.payment_form),
     status: order?.status,
