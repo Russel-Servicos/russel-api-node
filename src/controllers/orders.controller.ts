@@ -7,7 +7,7 @@ import {
 } from "@prisma/client";
 import { NextFunction, Request, Response } from "express";
 import path from "path";
-import { createTemplate, sendMail } from "../mailer";
+import Mailer from "../lib/mailer";
 import { convertPayment } from "../lib/convertPayment";
 
 export async function orderCreated(
@@ -36,11 +36,13 @@ export async function orderCreated(
       const orderEmailData = createOrderObj(order, enterprise);
       const templatePath = path.resolve(__dirname, "../../public/pedido.html");
 
-      const html = await createTemplate(orderEmailData, templatePath);
+      const html = await Mailer.createTemplate(orderEmailData, templatePath);
 
       const mailGroup = `${order.user.email},${process.env.EMAIL_H}`;
 
-      await sendMail(
+      const mailer = new Mailer();
+
+      await mailer.sendMail(
         mailGroup,
         `Pedido de implantação #${order.code} criado`,
         html

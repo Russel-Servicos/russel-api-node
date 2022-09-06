@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { createTemplate, sendMail } from "../mailer";
+import Mailer from "../lib/mailer";
 import path from "node:path";
 
 export async function created(req: Request, res: Response, next: NextFunction) {
@@ -18,9 +18,11 @@ export async function created(req: Request, res: Response, next: NextFunction) {
         email: process.env.EMAIL_H,
       };
 
-      const html = await createTemplate(data, templatePath);
+      const html = await Mailer.createTemplate(data, templatePath);
 
-      await sendMail(signer.email, "Assinatura solicitada", html);
+      const mailer = new Mailer();
+
+      await mailer.sendMail(signer.email, "Assinatura solicitada", html);
     }
 
     res.status(200).json({});
