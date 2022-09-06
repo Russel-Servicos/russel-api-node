@@ -1,4 +1,6 @@
 import nodemailer from "nodemailer";
+import handlebars from "handlebars";
+import fs from "fs/promises";
 
 async function createTransport() {
   const config = {
@@ -35,4 +37,15 @@ export async function sendMail(to: string, subject: string, html: string) {
       priority: "high",
     },
   });
+}
+
+export async function createTemplate(data: {}, src: string) {
+  try {
+    const source = await fs.readFile(src, "utf-8");
+    const template = handlebars.compile(source);
+    const result = template(data);
+    return result;
+  } catch (error) {
+    throw "Houve um erro ao tentar gerar o template de e-mail";
+  }
 }
