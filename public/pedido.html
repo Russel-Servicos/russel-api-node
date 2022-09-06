@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta
+            http-equiv="X-UA-Compatible"
+            content="IE=edge" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <style>
+            .email-container {
+                width: 600px;
+                margin: 0 auto;
+            }
+            .list-products .data-accountRequestDetails {
+                padding: 16px;
+                background-color: #fafafa;
+                border-radius: 5px;
+                margin-bottom: 40px;
+                border-bottom: 1px solid #e5e5e5;
+            }
+            .list-products div:last-child {
+                border-bottom: none;
+            }
+​
+            /* .data-address-accountRequestDetails .each-data-resquest {
+                padding-bottom: 24px;
+                margin-bottom: 24px;
+            } */
+​
+            /* .moreThenOne:last-child {
+                padding-bottom: 0;
+                margin-bottom: 0;
+                border: none;
+            } */
+​
+            .data-address-accountRequestDetails header {
+                margin-bottom: 32px;
+            }
+​
+            .accountRequestDetails__header {
+                margin-bottom: 40px;
+            }
+
+            .accountRequestDetails__header h1 {
+                font-size: 21px;
+            }
+
+            .accountRequestDetails__header p {
+                font-size: 21px;
+            }
+        </style>
+    </head>
+    <body class="email-container">
+        <div class="page-container-accountRequestDetails">
+            <!-- Informações do produto -->
+            <div class="accountRequestDetails__header">
+                <h1>Pedido {{code}}</h3>
+                <p>Emissão: {{date}}</p>
+                <p style="font-weight: bold">{{payment}}</p>
+                <div>
+                    <span style="font-weight: bold">Status:</span>
+                    <span style="color: #666666">{{status}}</span>
+                </div>
+            </div>
+            <!-- Lista os produtos -->
+            <div class="list-products">
+                {{#each items}}
+                <div class="data-accountRequestDetails">
+                    <div
+                        key="{index}"
+                        class="each-data-resquest">
+                        <div style="font-weight: bold; margin-bottom: 8px">{{this.name}}</div>
+                        <div style="margin-bottom: 8px; color: #666666">{{this.description}}</div>
+                        <div style="font-weight: bold; text-align: end; color: #666666">{{this.price}}</div>
+                    </div>
+                </div>
+                {{/each}}
+            </div>
+            <!-- Endereço cadastrado para entrega -->
+            <div class="data-address-accountRequestDetails">
+                <header>
+                    <h2>Endereço de implantação</h2>
+                </header>
+                <div>
+                    <span style="font-weight: bold;" >CEP: </span>
+                    <span>{{cep}}</span>
+                </div>
+                <div>
+                    <span style="font-weight: bold;">Endereço: </span>
+                    <span>{{address}}</span>
+                </div>
+                <div>
+                    <span style="font-weight: bold;">Bairro: </span>
+                    <span>{{district}}</span>
+                </div>
+                <div>
+                    <span style="font-weight: bold;">Cidade: </span>
+                    <span>{{city}}</span>
+                </div>
+                <div>
+                    <span style="font-weight: bold;">UF: </span>
+                    <span>{{uf}}</span>
+                </div>
+                <div>
+                    <span style="font-weight: bold;">Observações: </span>
+                    <span>{{obs}}</span>
+                </div>
+            </div>
+            <!-- Dados do contratante -->
+            <div class="data-address-accountRequestDetails">
+                <header>
+                    <h2>Dados cadastrais</h2>
+                </header>
+                <div>
+                    <span style="font-weight: bold;" >CNPJ: </span>
+                    <span>{{cnpj}}</span>
+                </div>
+                <div>
+                    <span style="font-weight: bold;">Razão Social: </span>
+                    <span>{{corporateName}}</span>
+                </div>
+                <div>
+                    <span style="font-weight: bold;">Nome do representante: </span>
+                    <span>{{name}}</span>
+                </div>
+                <div>
+                    <span style="font-weight: bold;">Telefone: </span>
+                    <span>{{phone}}</span>
+                </div>
+                <div>
+                    <span style="font-weight: bold;">Ramal: </span>
+                    <span>{{ramal}}</span>
+                </div>
+                <div>
+                    <span style="font-weight: bold;">E-mail: </span>
+                    <span>{{email}}</span>
+                </div>
+            </div>
+        </dv>
+    </body>
+</html>
+
+
+
+
+
+
+
+
+
