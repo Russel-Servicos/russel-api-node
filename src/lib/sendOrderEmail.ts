@@ -9,7 +9,10 @@ import { convertPayment } from "./convertPayment";
 import Mailer from "./mailer";
 import path from "path";
 
-async function sendOrderEmail(orderID: number, orderStatus: string) {
+async function sendOrderEmail(
+  orderID: number,
+  orderStatus: "implantação" | "assinatura" | "pagamento"
+) {
   const prisma = new PrismaClient();
   const order = await prisma["so_requests"].findUnique({
     where: {
