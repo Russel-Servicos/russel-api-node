@@ -9,7 +9,10 @@ import { convertPayment } from "./convertPayment";
 import Mailer from "./mailer";
 import path from "path";
 
-async function sendOrderEmail(orderID: number, orderStatus: string) {
+async function sendOrderEmail(
+  orderID: number,
+  orderStatus: "implantação" | "assinatura" | "pagamento"
+) {
   const prisma = new PrismaClient();
   const order = await prisma["so_requests"].findUnique({
     where: {
@@ -25,7 +28,7 @@ async function sendOrderEmail(orderID: number, orderStatus: string) {
     where: { id_user: order?.user.id },
   });
 
-  if (order) {
+  if (order !== null) {
     const orderEmailData = createOrderObj(order, enterprise, orderStatus);
     const templatePath = path.resolve(__dirname, "../../public/pedido.html");
 
@@ -34,11 +37,12 @@ async function sendOrderEmail(orderID: number, orderStatus: string) {
     const mailGroup = `${order.user.email},${process.env.EMAIL_H}`;
 
     const mailer = new Mailer();
+
     const title = emailTitle(orderStatus, order.code);
 
     await mailer.sendMail(mailGroup, title, html);
     await prisma.$disconnect();
-  }
+  } else throw "Pedido não encontrado";
 }
 
 function createOrderObj(
@@ -73,7 +77,7 @@ function emailTitle(emailStatus: string, emailCode: string): string {
     case "assinatura":
       return `Pedido de implantação #${emailCode} criado`;
     case "implantação":
-      return `O pedido ${emailCode} está pendente de implantação`;
+      return `O pedido #${emailCode} está pendente de implantação`;
   }
 
   return "";
