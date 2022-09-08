@@ -25,7 +25,7 @@ async function sendOrderEmail(orderID: number, orderStatus: string) {
     where: { id_user: order?.user.id },
   });
 
-  if (order) {
+  if (order !== null) {
     const orderEmailData = createOrderObj(order, enterprise, orderStatus);
     const templatePath = path.resolve(__dirname, "../../public/pedido.html");
 
@@ -34,11 +34,12 @@ async function sendOrderEmail(orderID: number, orderStatus: string) {
     const mailGroup = `${order.user.email},${process.env.EMAIL_H}`;
 
     const mailer = new Mailer();
+
     const title = emailTitle(orderStatus, order.code);
 
     await mailer.sendMail(mailGroup, title, html);
     await prisma.$disconnect();
-  }
+  } else throw "Pedido não encontrado";
 }
 
 function createOrderObj(
