@@ -77,7 +77,7 @@ function emailTitle(emailStatus: string, emailCode: string): string {
     case "assinatura":
       return `Pedido de implantação #${emailCode} criado`;
     case "implantação":
-      return `O pedido ${emailCode} está pendente de implantação`;
+      return `O pedido #${emailCode} está pendente de implantação`;
   }
 
   return "";
