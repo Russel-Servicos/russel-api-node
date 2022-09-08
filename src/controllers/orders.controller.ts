@@ -14,3 +14,17 @@ export async function orderCreated(
     next(error);
   }
 }
+
+export async function orderPaid(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const { code } = req.body.data;
+    await sendOrderEmail(parseInt(code), "implantação");
+    res.status(200).json({});
+  } catch (error) {
+    next(error);
+  }
+}
