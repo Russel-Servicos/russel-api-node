@@ -12,6 +12,8 @@ export async function created(req: Request, res: Response, next: NextFunction) {
       "../../public/email_assinatura.html"
     );
 
+    await sendOrderEmail(parseInt(code), "assinatura");
+
     for (let signer of signers) {
       const data = {
         url_doc: signer.sign_url,
@@ -25,8 +27,21 @@ export async function created(req: Request, res: Response, next: NextFunction) {
 
       await mailer.sendMail(signer.email, "Assinatura solicitada", html);
     }
+    res.status(200).json({});
+  } catch (error) {
+    next(error);
+  }
+}
 
-    await sendOrderEmail(parseInt(code), "assinatura");
+export async function docSigned(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  const { status, external_id: code } = req.body;
+  try {
+    if (status === "signed")
+      await sendOrderEmail(parseInt(code), "implantação");
     res.status(200).json({});
   } catch (error) {
     next(error);
