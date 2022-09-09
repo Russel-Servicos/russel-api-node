@@ -38,7 +38,8 @@ async function sendOrderEmail(
 
     const mailer = new Mailer();
 
-    const title = emailTitle(orderStatus, order.code);
+    await mailer.createTemplate(orderEmailData, templatePath);
+    await mailer.sendMail(mailGroup, title);
 
     await mailer.sendMail(mailGroup, title, html);
     await prisma.$disconnect();
