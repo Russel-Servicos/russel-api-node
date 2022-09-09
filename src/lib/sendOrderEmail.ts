@@ -24,6 +24,7 @@ async function sendOrderEmail(
       user: true,
     },
   });
+
   const enterprise = await prisma["users_entreprises"].findMany({
     where: { id_user: order?.user.id },
   });
@@ -32,9 +33,9 @@ async function sendOrderEmail(
     const orderEmailData = createOrderEmailData(order, enterprise, orderStatus);
     const templatePath = path.resolve(__dirname, "../../public/pedido.html");
 
-    const html = await Mailer.createTemplate(orderEmailData, templatePath);
-
     const mailGroup = `${order.user.email},${process.env.EMAIL_H}`;
+
+    const title = emailTitle(orderStatus, order.code);
 
     const mailer = new Mailer();
 
@@ -44,10 +45,10 @@ async function sendOrderEmail(
         return this.qtd * this.price;
       }
     );
+
     await mailer.createTemplate(orderEmailData, templatePath);
     await mailer.sendMail(mailGroup, title);
 
-    await mailer.sendMail(mailGroup, title, html);
     await prisma.$disconnect();
   } else throw "Pedido não encontrado";
 }
