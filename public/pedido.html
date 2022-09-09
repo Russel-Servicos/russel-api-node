@@ -11,9 +11,11 @@
         <title>Document</title>
         <style>
             .email-container {
-                width: 600px;
+                width: 100%;
                 margin: 0 auto;
+                padding: 8px;
             }
+
             .list-products .data-accountRequestDetails {
                 padding: 16px;
                 background-color: #fafafa;
@@ -51,6 +53,12 @@
             .accountRequestDetails__header p {
                 font-size: 21px;
             }
+
+            @media (min-width: 1200px) {
+                .email-container {
+                    width: 600px;
+                }
+            }
         </style>
     </head>
     <body class="email-container">
@@ -70,14 +78,20 @@
                 {{#each items}}
                 <div class="data-accountRequestDetails">
                     <div
-                        key="{index}"
                         class="each-data-resquest">
-                        <div style="font-weight: bold; margin-bottom: 8px">{{this.name}}</div>
+                        <div style="width: 100%;">
+                            <span style="font-weight: bold; margin-bottom: 8px">({{this.qtd}}) {{this.name}}</span>
+                            <span style="color: #666; float: right;">R${{this.price}}</span>
+                        </div>
                         <div style="margin-bottom: 8px; color: #666666">{{this.description}}</div>
-                        <div style="font-weight: bold; text-align: end; color: #666666">{{this.price}}</div>
+                        <div style="font-weight: bold; text-align: end;">R${{totalItem}}</div>
                     </div>
                 </div>
                 {{/each}}
+            </div>
+
+            <div>
+                <span style="color: #666;">Total: </span> <span style="float: right; font-weight: bold;">R${{total}}</span>
             </div>
             <!-- Endereço cadastrado para entrega -->
             <div class="data-address-accountRequestDetails">

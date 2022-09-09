@@ -4,6 +4,8 @@ import fs from "fs/promises";
 
 class Mailer {
   private transport;
+  private html = "";
+  private Handlebars = handlebars.create();
 
   constructor() {
     this.transport = this.createTransport();
@@ -29,11 +31,11 @@ class Mailer {
     return transport;
   }
 
-  async sendMail(to: string, subject: string, html: string) {
+  async sendMail(to: string, subject: string) {
     await this.transport.sendMail({
       from: process.env.MAILER_FROM,
       to,
-      html,
+      html: this.html,
       subject,
       replyTo: process.env.MAILER_REPLY,
       headers: {
@@ -42,15 +44,19 @@ class Mailer {
     });
   }
 
-  static async createTemplate(data: {}, src: string) {
+  async createTemplate(data: {}, src: string) {
     try {
       const source = await fs.readFile(src, "utf-8");
-      const template = handlebars.compile(source);
+      const template = this.Handlebars.compile(source);
       const result = template(data);
-      return result;
+      this.html = result;
     } catch (error) {
       throw "Houve um erro ao tentar gerar o template de e-mail";
     }
+  }
+
+  registerHelper(name: string, fn: () => void) {
+    this.Handlebars.registerHelper(name, fn);
   }
 }
 

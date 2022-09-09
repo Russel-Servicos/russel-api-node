@@ -24,28 +24,36 @@ async function sendOrderEmail(
       user: true,
     },
   });
+
   const enterprise = await prisma["users_entreprises"].findMany({
     where: { id_user: order?.user.id },
   });
 
   if (order !== null) {
-    const orderEmailData = createOrderObj(order, enterprise, orderStatus);
+    const orderEmailData = createOrderEmailData(order, enterprise, orderStatus);
     const templatePath = path.resolve(__dirname, "../../public/pedido.html");
-
-    const html = await Mailer.createTemplate(orderEmailData, templatePath);
 
     const mailGroup = `${order.user.email},${process.env.EMAIL_H}`;
 
-    const mailer = new Mailer();
-
     const title = emailTitle(orderStatus, order.code);
 
-    await mailer.sendMail(mailGroup, title, html);
+    const mailer = new Mailer();
+
+    mailer.registerHelper(
+      "totalItem",
+      function (this: { qtd: number; price: number }) {
+        return this.qtd * this.price;
+      }
+    );
+
+    await mailer.createTemplate(orderEmailData, templatePath);
+    await mailer.sendMail(mailGroup, title);
+
     await prisma.$disconnect();
   } else throw "Pedido não encontrado";
 }
 
-function createOrderObj(
+function createOrderEmailData(
   order: so_requests & { address: users_addresses; user: users },
   enterprise: users_entreprises[],
   status: string
@@ -68,6 +76,7 @@ function createOrderObj(
     email: order?.user.email,
     obs: order?.address.description,
     status: `Pendente de ${status}`,
+    total: order.total,
   };
 }
 
