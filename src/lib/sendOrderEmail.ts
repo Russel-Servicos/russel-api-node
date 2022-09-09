@@ -29,7 +29,7 @@ async function sendOrderEmail(
   });
 
   if (order !== null) {
-    const orderEmailData = createOrderObj(order, enterprise, orderStatus);
+    const orderEmailData = createOrderEmailData(order, enterprise, orderStatus);
     const templatePath = path.resolve(__dirname, "../../public/pedido.html");
 
     const html = await Mailer.createTemplate(orderEmailData, templatePath);
@@ -45,7 +45,7 @@ async function sendOrderEmail(
   } else throw "Pedido não encontrado";
 }
 
-function createOrderObj(
+function createOrderEmailData(
   order: so_requests & { address: users_addresses; user: users },
   enterprise: users_entreprises[],
   status: string
