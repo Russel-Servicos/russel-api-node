@@ -77,6 +77,8 @@ function createOrderEmailData(
     obs: order?.address.description,
     status: `Pendente de ${status}`,
     total: order.total,
+    complement: order.address.complement,
+    number: order.address.number,
   };
 }
 
