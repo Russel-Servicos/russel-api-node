@@ -54,6 +54,10 @@ class Mailer {
       throw "Houve um erro ao tentar gerar o template de e-mail";
     }
   }
+
+  registerHelper(name: string, fn: () => void) {
+    this.Handlebars.registerHelper(name, fn);
+  }
 }
 
 export default Mailer;

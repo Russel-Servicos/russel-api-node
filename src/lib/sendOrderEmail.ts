@@ -38,6 +38,12 @@ async function sendOrderEmail(
 
     const mailer = new Mailer();
 
+    mailer.registerHelper(
+      "totalItem",
+      function (this: { qtd: number; price: number }) {
+        return this.qtd * this.price;
+      }
+    );
     await mailer.createTemplate(orderEmailData, templatePath);
     await mailer.sendMail(mailGroup, title);
 
