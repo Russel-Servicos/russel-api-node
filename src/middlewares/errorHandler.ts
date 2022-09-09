@@ -6,7 +6,7 @@ function errorHandler(
   response: Response,
   next: NextFunction
 ) {
-  return response.status(500).json({ error: "Houve um erro no servidor" });
+  return response.status(500).json({ error });
 }
 
 export default errorHandler;
