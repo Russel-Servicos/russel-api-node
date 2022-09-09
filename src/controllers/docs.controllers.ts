@@ -21,11 +21,10 @@ export async function created(req: Request, res: Response, next: NextFunction) {
         email: process.env.EMAIL_H,
       };
 
-      const html = await Mailer.createTemplate(data, templatePath);
-
       const mailer = new Mailer();
+      await mailer.createTemplate(data, templatePath);
 
-      await mailer.sendMail(signer.email, "Assinatura solicitada", html);
+      await mailer.sendMail(signer.email, "Assinatura solicitada");
     }
     res.status(200).json({});
   } catch (error) {
