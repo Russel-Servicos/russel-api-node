@@ -80,9 +80,12 @@
                     <div
                         key="{index}"
                         class="each-data-resquest">
-                        <div style="font-weight: bold; margin-bottom: 8px">{{this.name}}</div>
+                        <div style="width: 100%;">
+                            <span style="font-weight: bold; margin-bottom: 8px">({{this.qtd}}) {{this.name}}</span>
+                            <span style="color: #666; float: right;">R${{this.price}}</span>
+                        </div>
                         <div style="margin-bottom: 8px; color: #666666">{{this.description}}</div>
-                        <div style="font-weight: bold; text-align: end; color: #666666">{{this.price}}</div>
+                        <div style="font-weight: bold; text-align: end;">R${{totalItem}}</div>
                     </div>
                 </div>
                 {{/each}}
