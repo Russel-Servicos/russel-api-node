@@ -8,6 +8,7 @@ import {
 import { convertPayment } from "./convertPayment";
 import Mailer from "./mailer";
 import path from "path";
+import { convertUnicode } from "./format";
 
 async function sendOrderEmail(
   orderID: number,
@@ -40,9 +41,20 @@ async function sendOrderEmail(
     const mailer = new Mailer();
 
     mailer.registerHelper(
-      "totalItem",
+      "itemTotal",
       function (this: { qtd: number; price: number }) {
         return this.qtd * this.price;
+      }
+    );
+
+    mailer.registerHelper("itemName", function (this: { name: string }) {
+      return convertUnicode(this.name);
+    });
+
+    mailer.registerHelper(
+      "itemDescription",
+      function (this: { description: string }) {
+        return convertUnicode(this.description);
       }
     );
 
