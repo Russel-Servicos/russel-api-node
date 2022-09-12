@@ -1,6 +1,6 @@
 export function convertUnicode(textInput: string) {
   let textOutput = textInput;
-  for (let key of Object.keys(unicodeTable)) {
+  for (let key in unicodeTable) {
     const regex = new RegExp(key, "g");
     textOutput = textOutput.replace(regex, unicodeTable[key]);
   }

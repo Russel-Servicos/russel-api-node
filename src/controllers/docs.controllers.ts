@@ -9,7 +9,7 @@ export async function created(req: Request, res: Response, next: NextFunction) {
     if (!signers) throw "lista de assinantes ausente";
     const templatePath = path.resolve(
       __dirname,
-      "../../public/email_assinatura.html"
+      "../../templates/email_assinatura.html"
     );
 
     await sendOrderEmail(parseInt(code), "assinatura");
