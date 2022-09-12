@@ -32,7 +32,7 @@ async function sendOrderEmail(
 
   if (order !== null) {
     const orderEmailData = createOrderEmailData(order, enterprise, orderStatus);
-    const templatePath = path.resolve(__dirname, "../../public/pedido.html");
+    const templatePath = path.resolve(__dirname, "../../templates/pedido.html");
 
     const mailGroup = `${order.user.email},${process.env.EMAIL_H}`;
 
