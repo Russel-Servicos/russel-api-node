@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import Mailer from "../lib/mailer";
 import path from "node:path";
-import sendOrderEmail from "../lib/sendOrderEmail";
+import { sendOrderEmail } from "../lib/orders";
 
 export async function created(req: Request, res: Response, next: NextFunction) {
   try {
