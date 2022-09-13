@@ -1,3 +1,5 @@
 import sendOrderEmail from "./sendOrderEmail";
+import getOrder from "./getOrder";
+import changeOrderStatus from "./changeOrderStatus";
 
-export { sendOrderEmail };
+export { sendOrderEmail, getOrder, changeOrderStatus };
