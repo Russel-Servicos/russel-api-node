@@ -5,58 +5,30 @@ import {
   users,
   users_entreprises,
 } from "@prisma/client";
-import { convertPayment } from "./convertPayment";
-import Mailer from "./mailer";
+import { convertPayment } from "../convertPayment";
+import Mailer from "../mailer";
 import path from "path";
-import { convertUnicode } from "./format";
+import { convertUnicode } from "../format";
+import getOrder from "./getOrder";
+
+const prisma = new PrismaClient();
+const templatePath = path.resolve(__dirname, "../../../templates/pedido.html");
 
 async function sendOrderEmail(
   orderID: number,
   orderStatus: "implantação" | "assinatura" | "pagamento"
 ) {
-  const prisma = new PrismaClient();
-  const order = await prisma["so_requests"].findUnique({
-    where: {
-      id: orderID,
-    },
-
-    include: {
-      address: true,
-      user: true,
-    },
-  });
-
-  const enterprise = await prisma["users_entreprises"].findMany({
-    where: { id_user: order?.user.id },
-  });
+  const order = await getOrder(orderID);
 
   if (order !== null) {
-    const orderEmailData = createOrderEmailData(order, enterprise, orderStatus);
-    const templatePath = path.resolve(__dirname, "../../templates/pedido.html");
+    const enterprise = await getEnterprise(order?.user.id);
+    const orderEmailData = getOrderEmailData(order, enterprise, orderStatus);
 
     const mailGroup = `${order.user.email},${process.env.EMAIL_H}`;
-
-    const title = emailTitle(orderStatus, order.code);
-
+    const title = getEmailTitle(orderStatus, order.code);
     const mailer = new Mailer();
 
-    mailer.registerHelper(
-      "itemTotal",
-      function (this: { qtd: number; price: number }) {
-        return this.qtd * this.price;
-      }
-    );
-
-    mailer.registerHelper("itemName", function (this: { name: string }) {
-      return convertUnicode(this.name);
-    });
-
-    mailer.registerHelper(
-      "itemDescription",
-      function (this: { description: string }) {
-        return convertUnicode(this.description);
-      }
-    );
+    registerEmailHelpers(mailer);
 
     await mailer.createTemplate(orderEmailData, templatePath);
     await mailer.sendMail(mailGroup, title);
@@ -65,7 +37,13 @@ async function sendOrderEmail(
   } else throw "Pedido não encontrado";
 }
 
-function createOrderEmailData(
+async function getEnterprise(orderID: bigint) {
+  return await prisma["users_entreprises"].findMany({
+    where: { id_user: orderID },
+  });
+}
+
+function getOrderEmailData(
   order: so_requests & { address: users_addresses; user: users },
   enterprise: users_entreprises[],
   status: string
@@ -94,7 +72,7 @@ function createOrderEmailData(
   };
 }
 
-function emailTitle(emailStatus: string, emailCode: string): string {
+function getEmailTitle(emailStatus: string, emailCode: string): string {
   switch (emailStatus) {
     case "pagamento":
     case "assinatura":
@@ -104,6 +82,26 @@ function emailTitle(emailStatus: string, emailCode: string): string {
   }
 
   return "";
+}
+
+function registerEmailHelpers(mailer: Mailer) {
+  mailer.registerHelper(
+    "itemTotal",
+    function (this: { qtd: number; price: number }) {
+      return this.qtd * this.price;
+    }
+  );
+
+  mailer.registerHelper("itemName", function (this: { name: string }) {
+    return convertUnicode(this.name);
+  });
+
+  mailer.registerHelper(
+    "itemDescription",
+    function (this: { description: string }) {
+      return convertUnicode(this.description);
+    }
+  );
 }
 
 export default sendOrderEmail;

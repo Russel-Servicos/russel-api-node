@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import sendOrderEmail from "../lib/sendOrderEmail";
+import { sendOrderEmail } from "../lib/orders";
 
 export async function orderCreated(
   req: Request,
