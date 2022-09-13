@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { sendOrderEmail } from "../lib/orders";
+import { changeOrderStatus, sendOrderEmail } from "../lib/orders";
 
 export async function orderCreated(
   req: Request,
@@ -23,6 +23,7 @@ export async function orderPaid(
   try {
     const { code } = req.body.data;
     await sendOrderEmail(parseInt(code), "implantação");
+    await changeOrderStatus(parseInt(code), "paid");
     res.status(200).json({});
   } catch (error) {
     next(error);
