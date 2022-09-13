@@ -9,6 +9,7 @@ import { convertPayment } from "../convertPayment";
 import Mailer from "../mailer";
 import path from "path";
 import { convertUnicode } from "../format";
+import getOrder from "./getOrder";
 
 const prisma = new PrismaClient();
 const templatePath = path.resolve(__dirname, "../../../templates/pedido.html");
@@ -34,19 +35,6 @@ async function sendOrderEmail(
 
     await prisma.$disconnect();
   } else throw "Pedido não encontrado";
-}
-
-async function getOrder(orderID: number) {
-  return await prisma["so_requests"].findUnique({
-    where: {
-      id: orderID,
-    },
-
-    include: {
-      address: true,
-      user: true,
-    },
-  });
 }
 
 async function getEnterprise(orderID: bigint) {
