@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import Mailer from "../lib/mailer";
 import path from "node:path";
-import { sendOrderEmail } from "../lib/orders";
+import { changeOrderStatus, sendOrderEmail } from "../lib/orders";
 
 export async function created(req: Request, res: Response, next: NextFunction) {
   try {
@@ -39,8 +39,10 @@ export async function docSigned(
 ) {
   const { status, external_id: code } = req.body;
   try {
-    if (status === "signed")
+    if (status === "signed") {
       await sendOrderEmail(parseInt(code), "implantação");
+      await changeOrderStatus(parseInt(code), "signed");
+    }
     res.status(200).json({});
   } catch (error) {
     next(error);
