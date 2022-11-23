@@ -31,7 +31,7 @@ async function sendOrderEmail(
     registerEmailHelpers(mailer);
 
     await mailer.createTemplate(orderEmailData, templatePath);
-    await mailer.sendMail(mailGroup, title);
+    //await mailer.sendMail(mailGroup, title);
 
     await prisma.$disconnect();
   } else throw "Pedido não encontrado";
