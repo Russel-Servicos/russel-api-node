@@ -24,7 +24,7 @@ export async function created(req: Request, res: Response, next: NextFunction) {
       const mailer = new Mailer();
       await mailer.createTemplate(data, templatePath);
 
-      await mailer.sendMail(signer.email, "Assinatura solicitada");
+     // await mailer.sendMail(signer.email, "Assinatura solicitada");
     }
     res.status(200).json({});
   } catch (error) {
