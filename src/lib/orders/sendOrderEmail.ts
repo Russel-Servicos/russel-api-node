@@ -24,7 +24,7 @@ async function sendOrderEmail(
     const enterprise = await getEnterprise(order?.user.id);
     const orderEmailData = getOrderEmailData(order, enterprise, orderStatus);
 
-    const mailGroup = `${order.user.email},admin@russelservicos.com.br`;
+    const mailGroup = `${order.user.email, 'admin@russelservicos.com.br'}`;
     const title = getEmailTitle(orderStatus, order.code);
     const mailer = new Mailer();
 
