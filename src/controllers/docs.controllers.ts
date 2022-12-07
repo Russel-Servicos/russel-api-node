@@ -18,7 +18,7 @@ export async function created(req: Request, res: Response, next: NextFunction) {
       const data = {
         url_doc: signer.sign_url,
         src: process.env.IMG_LOGO_URL,
-        email: "admin@russelservicos.com.br",
+        email: process.env.EMAIL_H,,
       };
 
       const mailer = new Mailer();
