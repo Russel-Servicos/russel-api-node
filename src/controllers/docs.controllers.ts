@@ -14,9 +14,9 @@ export async function created(req: Request, res: Response, next: NextFunction) {
 
     await sendOrderEmail(parseInt(code), "assinatura");
 
-    for (let signer of signers) {
+//     for (let signer of signers) {
       const data = {
-        url_doc: signer.sign_url,
+        url_doc: signers[0].sign_url,
         src: process.env.IMG_LOGO_URL,
         email: process.env.EMAIL_H,
       };
@@ -25,7 +25,7 @@ export async function created(req: Request, res: Response, next: NextFunction) {
       await mailer.createTemplate(data, templatePath);
 
       await mailer.sendMail(signer.email, "Assinatura solicitada");
-    }
+//     }
     res.status(200).json({});
   } catch (error) {
     next(error);
