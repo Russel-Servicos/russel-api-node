@@ -6,6 +6,8 @@ function errorHandler(
   response: Response,
   next: NextFunction
 ) {
+  console.error(error);
+  
   return response.status(500).json({ error });
 }
 

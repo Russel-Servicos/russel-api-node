@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import orders from "./orders";
 import docs from "./docs";
 
