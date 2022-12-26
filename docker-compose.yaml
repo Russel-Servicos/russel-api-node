@@ -1,0 +1,53 @@
+version: "3.1"
+
+services:
+  mysql:
+    image: mysql:8.0
+    restart: always
+    container_name: mysql
+    ports:
+      - 3306:3306
+    volumes:
+      - 'mysql_database:/var/lib/mysql'
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: russel_ecommerce
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-uroot", "--password=root"]
+      start_period: 5s
+      interval: 3s
+      timeout: 60s
+      retries: 10
+
+  phpmyadmin:
+    image: phpmyadmin:5.2.0-apache
+    restart: always
+    container_name: phpmyadmin
+    ports:
+      - 8888:80
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      UPLOAD_LIMIT: 123M
+      PMA_USER: root
+      PMA_PASSWORD: root
+    healthcheck:
+      test: ["CMD", "curl", "-Ss", "http://localhost/robots.txt"]
+      start_period: 5s
+      interval: 3s
+      timeout: 60s
+      retries: 10
+    # depends_on:
+    #   mysql:
+    #     condition: service_healthy
+
+  mailhog:
+    image: mailhog/mailhog:v1.0.1
+    container_name: mailhog
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+
+volumes:
+  mysql_database:
+    external: true
