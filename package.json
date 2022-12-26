@@ -8,7 +8,7 @@
         "npm": "8.15.0"
     },
     "scripts": {
-        "start": "MODE=stage node ./dist/index.js",
+        "start": "MODE=production node ./dist/index.js",
         "stage": "MODE=stage node ./dist/index.js",
         "prebuild": "rm -rf ./dist",
         "build": "tsc",
