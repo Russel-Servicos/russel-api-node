@@ -1,3 +1,4 @@
+// POST /docs/created
 const docsCreated = {
     sandbox: false,
     external_id: "1090",
@@ -97,6 +98,7 @@ const docsCreated = {
     event_type: "doc_created",
 };
 
+// POST /docs/signed
 const docsSigned = {
     sandbox: false,
     external_id: "1095",
