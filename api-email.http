@@ -1,0 +1,144 @@
+@stage_url = https://test-backend.russelservicosapi.com.br/public
+@local_url = http://localhost:5000/api
+@base_url = {{local_url}}
+
+### GET /
+
+GET http://localhost:5000/ HTTP/1.1
+Content-Type: application/json
+
+### POST /docs/created
+
+POST {{ base_url }}/docs/created HTTP/1.1
+Content-Type: application/json
+
+{
+    "sandbox": false,
+    "external_id": "1092",
+    "open_id": 370,
+    "token": "9f338c10-e888-4fa6-8642-ab0c0e20001c",
+    "name": "Contrato de presta\\u00e7\\u00e3o de servi\\u00e7os faturado",
+    "folder_path": "/",
+    "status": "pending",
+    "lang": "pt-br",
+    "original_file": "https://zapsign.s3.amazonaws.com/2022/12/pdf/41f4ee59-2f7d-4f0e-bb5e-206c666bad4c/3c624e22-23c2-4698-8656-b1136397a10b.pdf",
+    "signed_file": null,
+    "extra_docs": [],
+    "created_through": "api-template",
+    "deleted": false,
+    "deleted_at": null,
+    "signed_file_only_finished": false,
+    "disable_signer_emails": false,
+    "brand_logo": "https://russelservicos.com.br/wp-content/themes/ferado/images/logo-branca.png",
+    "brand_primary_color": "#E1383E",
+    "created_at": "2022-12-13T15:04:54.806846Z",
+    "last_update_at": "2022-12-13T15:04:54.806872Z",
+    "created_by": { "email": "admin@russelservicos.com.br" },
+    "template": { "token": "ced37429-5a85-4c7c-8961-0cf7b6899243" },
+    "signers": [
+        {
+            "external_id": "",
+            "sign_url": "https://app.zapsign.com.br/verificar/3d9b16e9-d7aa-442e-8d12-83f86c7b0876",
+            "token": "3d9b16e9-d7aa-442e-8d12-83f86c7b0876",
+            "status": "new",
+            "name": "Designer Russel",
+            "lock_name": true,
+            "email": "designer@empresa.russelservicos.com.br",
+            "lock_email": true,
+            "hide_email": false,
+            "blank_email": false,
+            "phone_country": "55",
+            "phone_number": "",
+            "lock_phone": false,
+            "hide_phone": false,
+            "blank_phone": false,
+            "times_viewed": 0,
+            "last_view_at": null,
+            "signed_at": null,
+            "auth_mode": "assinaturaTela",
+            "qualification": "",
+            "require_selfie_photo": false,
+            "require_document_photo": false,
+            "geo_latitude": null,
+            "geo_longitude": null,
+            "redirect_link": "",
+            "signature_image": null,
+            "visto_image": null,
+            "document_photo_url": "",
+            "document_verse_photo_url": "",
+            "selfie_photo_url": "",
+            "selfie_photo_url2": "",
+            "send_via": "email",
+        },
+        {
+            "external_id": "",
+            "sign_url": "https://app.zapsign.com.br/verificar/4ef868d4-d11d-456f-b05b-f99768ac6d19",
+            "token": "4ef868d4-d11d-456f-b05b-f99768ac6d19",
+            "status": "new",
+            "name": "Hugo Leonardo da Silva Russel",
+            "lock_name": true,
+            "email": "hugoleonardo@russelservicos.com.br",
+            "lock_email": true,
+            "hide_email": false,
+            "blank_email": false,
+            "phone_country": "55",
+            "phone_number": "21998658883",
+            "lock_phone": true,
+            "hide_phone": false,
+            "blank_phone": false,
+            "times_viewed": 0,
+            "last_view_at": null,
+            "signed_at": null,
+            "auth_mode": "assinaturaTela",
+            "qualification": "",
+            "require_selfie_photo": false,
+            "require_document_photo": false,
+            "geo_latitude": null,
+            "geo_longitude": null,
+            "redirect_link": "",
+            "signature_image": null,
+            "visto_image": null,
+            "document_photo_url": "",
+            "document_verse_photo_url": "",
+            "selfie_photo_url": "",
+            "selfie_photo_url2": "",
+            "send_via": "email",
+        },
+    ],
+    "answers": [],
+    "auto_reminder": 0,
+    "event_type": "doc_created",
+};
+
+### POST /docs/signed
+
+POST {{ base_url }}/docs/signed HTTP/1.1
+Content-Type: application/json
+
+{
+    "email": "ian.augusto@g.globo",
+    "password": "123456"
+}
+
+### POST /orders/created
+
+POST {{ base_url }}/orders/created HTTP/1.1
+Content-Type: application/json
+
+{
+    "name": "teste",
+    "email": "teste@email.com.br",
+    "password": "123456",
+    "partner_id": 2145,
+    "role": "partner",
+    "status": "enabled"
+}
+
+### POST /orders/paid
+
+POST {{ base_url }}/orders/paid HTTP/1.1
+Content-Type: application/json
+
+{
+    "name": "Teste Partner"
+}
