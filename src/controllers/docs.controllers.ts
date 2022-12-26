@@ -1,50 +1,34 @@
 import { Request, Response, NextFunction } from "express";
-import Mailer from "../lib/mailer";
-import path from "node:path";
 import { changeOrderStatus, sendOrderEmail } from "../lib/orders";
+import * as env from "../env";
+import { sendSignatureRequestedEmail } from "../lib/orders/";
 
 export async function created(req: Request, res: Response, next: NextFunction) {
-  try {
-    const { signers, external_id: code } = req.body;
-    if (!signers) throw "lista de assinantes ausente";
-    const templatePath = path.resolve(
-      __dirname,
-      "../../templates/email_assinatura.html"
-    );
+    try {
+        const { signers, external_id: code } = req.body;
+        if (!signers) throw "lista de assinantes ausente";
 
-    await sendOrderEmail(parseInt(code), "assinatura");
+        const typedSigners: Array<object> = signers as Array<object>;
+        const signer = typedSigners.filter((signer: any) => signer.email !== env.emailHugo);
 
-     for (let signer of signers) {
-      const data = {
-        url_doc: signer.sign_url,
-        src: process.env.IMG_LOGO_URL,
-        email: process.env.EMAIL_H,
-      };
+        await sendSignatureRequestedEmail(signer[0]);
+        await sendOrderEmail(parseInt(code), "assinatura");
 
-      const mailer = new Mailer();
-      await mailer.createTemplate(data, templatePath);
-
-      await mailer.sendMail(signer.email, "Assinatura solicitada");
-     }
-    res.status(200).json({});
-  } catch (error) {
-    next(error);
-  }
+        res.status(200).json({});
+    } catch (error) {
+        next(error);
+    }
 }
 
-export async function docSigned(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
-  const { status, external_id: code } = req.body;
-  try {
-    if (status === "signed") {
-      await sendOrderEmail(parseInt(code), "implantação");
-      await changeOrderStatus(parseInt(code), "signed");
+export async function docSigned(req: Request, res: Response, next: NextFunction) {
+    const { status, external_id: code } = req.body;
+    try {
+        if (status === "signed") {
+            await sendOrderEmail(parseInt(code), "implantação");
+            await changeOrderStatus(parseInt(code), "signed");
+        }
+        res.status(200).json({});
+    } catch (error) {
+        next(error);
     }
-    res.status(200).json({});
-  } catch (error) {
-    next(error);
-  }
 }
