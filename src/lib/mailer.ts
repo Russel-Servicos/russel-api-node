@@ -32,10 +32,10 @@ class Mailer {
         return transport;
     }
 
-    async sendMail(to: string, subject: string) {
+    sendMail(to: string, subject: string) {
         console.log("\nenviando email...");
         try {
-            await this.transport.sendMail({
+            this.transport.sendMail({
                 from: process.env.MAILER_FROM,
                 to,
                 html: this.html,

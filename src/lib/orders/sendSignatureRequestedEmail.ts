@@ -14,5 +14,5 @@ export default async function sendSignatureRequestedEmail(signer: any) {
     const mailer = new Mailer();
     await mailer.createTemplate(data, templatePath);
 
-    await mailer.sendMail(signer.email, "Assinatura solicitada");
+    mailer.sendMail(signer.email, "Assinatura solicitada");
 }

@@ -36,7 +36,7 @@ async function sendOrderEmail(
     registerEmailHelpers(mailer);
 
     await mailer.createTemplate(orderEmailData, templatePath);
-    await mailer.sendMail(mailGroup, title);
+    mailer.sendMail(mailGroup, title);
 
     await prisma.$disconnect();
 }

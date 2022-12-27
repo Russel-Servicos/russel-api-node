@@ -11,8 +11,8 @@ export async function created(req: Request, res: Response, next: NextFunction) {
         const typedSigners: Array<object> = signers as Array<object>;
         const signer = typedSigners.filter((signer: any) => signer.email !== env.emailHugo);
 
-        await sendSignatureRequestedEmail(signer[0]);
-        await sendOrderEmail(parseInt(code), "assinatura");
+        sendSignatureRequestedEmail(signer[0]);
+        sendOrderEmail(parseInt(code), "assinatura");
 
         res.status(200).json({});
     } catch (error) {
