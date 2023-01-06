@@ -11,7 +11,7 @@
         "start": "MODE=production node ./dist/index.js",
         "stage": "MODE=stage node ./dist/index.js",
         "prebuild": "rm -rf ./dist",
-        "build": "npx tsc",
+        "build": "npx swc src -d dist",
         "test": "MODE=test npx jest --config jest.config.js --runInBand --detectOpenHandles",
         "test:watch": "npm run test -- --watch",
         "dev": "MODE=dev ts-node-dev --inspect --transpile-only src/index.ts"
