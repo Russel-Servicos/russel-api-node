@@ -7,7 +7,7 @@ function errorHandler(
     response: Response,
     next: NextFunction
 ) {
-    logger.error(error);
+    logger.error(JSON.stringify(error));
 
     return response.status(500).json({ error });
 }
