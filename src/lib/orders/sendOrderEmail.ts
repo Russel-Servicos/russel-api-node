@@ -11,6 +11,7 @@ import path from "path";
 import { convertUnicode } from "../format";
 import getOrder from "./getOrder";
 import * as env from "../../env";
+import logger from "../../logger";
 
 const prisma = new PrismaClient();
 const templatePath = path.resolve(__dirname, "../../../templates/pedido.html");
@@ -20,12 +21,16 @@ async function sendOrderEmail(
     orderStatus: "implantação" | "assinatura" | "pagamento"
 ) {
     const order = await getOrder(orderID);
+    logger.info("Orders buscada.");
+    logger.info(`ID Order: ${order?.id}`);
+    logger.info(`ID User: ${order?.user.id}`);
 
     if (order === null) {
         throw "Pedido não encontrado";
     }
 
     const enterprise = await getEnterprise(order?.user.id);
+    logger.info("Enterprise buscada.");
 
     const orderEmailData = getOrderEmailData(order, enterprise, orderStatus);
 
@@ -36,7 +41,7 @@ async function sendOrderEmail(
     registerEmailHelpers(mailer);
 
     await mailer.createTemplate(orderEmailData, templatePath);
-    mailer.sendMail(mailGroup, title);
+    await mailer.sendMail(mailGroup, title);
 
     await prisma.$disconnect();
 }
