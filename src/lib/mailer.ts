@@ -1,6 +1,7 @@
 import nodemailer from "nodemailer";
 import handlebars from "handlebars";
 import fs from "fs/promises";
+import logger from "../logger";
 
 class Mailer {
     private transport;
@@ -32,10 +33,12 @@ class Mailer {
         return transport;
     }
 
-    sendMail(to: string, subject: string) {
-        console.log("\nenviando email...");
+    async sendMail(to: string, subject: string) {
         try {
-            this.transport.sendMail({
+            logger.info("Enviando email...");
+            logger.info(`to: '${to}'`);
+            logger.info(`subject: '${subject}'`);
+            await this.transport.sendMail({
                 from: process.env.MAILER_FROM,
                 to,
                 html: this.html,
@@ -45,7 +48,8 @@ class Mailer {
                     priority: "high",
                 },
             });
-            console.log(`\nemail enviado para: ${to}`);
+            logger.info("Email enviado.");
+            this.transport.close();
         } catch (error) {
             throw error;
         }
