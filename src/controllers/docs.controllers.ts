@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { changeOrderStatus, sendOrderEmail } from "../lib/orders";
 import * as env from "../env";
 import { sendSignatureRequestedEmail } from "../lib/orders/";
+import logger from "../logger";
 
 export async function created(req: Request, res: Response, next: NextFunction) {
     try {
@@ -11,8 +12,13 @@ export async function created(req: Request, res: Response, next: NextFunction) {
         const typedSigners: Array<object> = signers as Array<object>;
         const signer = typedSigners.filter((signer: any) => signer.email !== env.emailHugo);
 
-        sendSignatureRequestedEmail(signer[0]);
-        sendOrderEmail(parseInt(code), "assinatura");
+        logger.info("Enviando email de assinatura...");
+        await sendSignatureRequestedEmail(signer[0]);
+        logger.info("Email de assinatura enviado.");
+
+        logger.info("Enviando email de pedido de implantação...");
+        await sendOrderEmail(parseInt(code), "assinatura");
+        logger.info("Email de pedido de implantação enviado.");
 
         res.status(200).json({});
     } catch (error) {
