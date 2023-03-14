@@ -23,7 +23,7 @@ class Mailer {
             },
 
             dkim: {
-                domainName: "russelservicos.com.br",
+                domainName: "russelservico.com.br",
                 keySelector: "nodemailer",
                 privateKey: process.env.DKIM_KEY || "",
             },
